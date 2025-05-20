@@ -1,12 +1,15 @@
-import express, { json } from "express";
+import express, { json, Router } from "express";
 import connectDB from "./src/config/database.js";
 import { loggingMiddleware } from "./src/middleware/index.js";
+import cors from "cors";
+import router from "./src/routes/index.js";
 
 const app = express();
 
 app.use(json());
-app.use(cors());
 app.use(loggingMiddleware);
+app.use(cors());
+app.use(router);
 
 connectDB()
     .then(() => {
