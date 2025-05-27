@@ -24,7 +24,6 @@ const PhotographerProfileSchema = new mongoose.Schema({
     Description: {
         type: String,
     },
-    Avatar: String,
     Price: String,
     PhotoGraphs: [String],
 });

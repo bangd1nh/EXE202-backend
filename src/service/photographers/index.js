@@ -9,6 +9,9 @@ const dataResponse = (code, message, payload) => {
 };
 
 export const getAllPhotographers = async () => {
-    const photographers = await PhotographerProfile.find();
+    const photographers = await PhotographerProfile.find().populate(
+        "PhotographerId",
+        "Email FirstName LastName PhoneNumber Avatar Username"
+    );
     return dataResponse(200, "success", photographers);
 };
