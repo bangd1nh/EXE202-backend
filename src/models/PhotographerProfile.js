@@ -24,8 +24,15 @@ const PhotographerProfileSchema = new mongoose.Schema({
     Description: {
         type: String,
     },
+    Services: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: "Services",
+    },
     Price: String,
-    PhotoGraphs: [String],
+    PhotoGraphs: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Photographs",
+    },
 });
 
 const PhotographerProfile = mongoose.model(

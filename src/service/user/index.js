@@ -1,6 +1,7 @@
 import User from "../../models/User.js";
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
+import PhotographerProfile from "../../models/PhotographerProfile.js";
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -63,4 +64,17 @@ export const uploadUserAvatar = async (file, userId) => {
         );
         streamifier.createReadStream(file.buffer).pipe(stream);
     });
+};
+
+export const getPhotographerProfile = async (pId) => {
+    const phothographer = await PhotographerProfile.findById(pId)
+        .populate(
+            "PhotographerId",
+            "Email FirstName LastName PhoneNumber Avatar Username"
+        )
+        .populate("PhotoGraphs");
+    if (!phothographer) {
+        return dataResponse(404, "not found photographer", null);
+    }
+    return dataResponse(200, "found", phothographer);
 };
