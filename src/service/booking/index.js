@@ -73,3 +73,26 @@ export const getPendingBookingByPhotographerId = async (photographerId) => {
         .populate("ServiceId");
     return dataResponse(200, "success", bookings);
 };
+
+export const acceptBooking = async (bookingId, status) => {
+    const booking = await Booking.findByIdAndUpdate(bookingId, {
+        Status: status,
+    });
+    if (!booking) {
+        return dataResponse(404, "not found", null);
+    }
+    return dataResponse(200, "sucess", booking);
+};
+
+export const getAcceptedBooking = async (photographerId) => {
+    const photographer = await PhotographerProfile.findOne({
+        PhotographerId: photographerId,
+    });
+    const bookings = await Booking.find({
+        PhotographerId: photographer._id,
+        Status: "ACCEPT",
+    })
+        .populate("CustomerId", "-Password")
+        .populate("ServiceId");
+    return dataResponse(200, "success", bookings);
+};

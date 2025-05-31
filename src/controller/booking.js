@@ -1,5 +1,6 @@
 import express from "express";
 import {
+    acceptBooking,
     getCustomerIdByEmail,
     getPendingBookingByPhotographerId,
     getPhotographerUsername,
@@ -56,5 +57,25 @@ booking.get("/book/:photographerId", async (req, res) => {
         payload: result.payload,
     });
 });
+
+booking.get("/book/accept/:bookingId", async (req, res) => {
+    const { bookingId } = req.params;
+    const result = await acceptBooking(bookingId, "ACCEPT");
+    res.status(result.code).json({
+        message: result.message,
+        payload: result.payload,
+    });
+});
+
+booking.get("/book/reject/:bookingId", async (req, res) => {
+    const { bookingId } = req.params;
+    const result = await acceptBooking(bookingId, "REJECT");
+    res.status(result.code).json({
+        message: result.message,
+        payload: result.payload,
+    });
+});
+
+booking.get("/book/acceptList/:photographerId", async (req, res) => {});
 
 export default booking;
