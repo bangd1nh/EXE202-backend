@@ -53,6 +53,7 @@ export const handleBookingForPhotographer = async (
         Time: time,
         Message: message,
         BookingType: "Photographer",
+        Status: "PENDING",
         Location: location,
     });
     if (!booking) {
@@ -95,4 +96,19 @@ export const getAcceptedBooking = async (photographerId) => {
         .populate("CustomerId", "-Password")
         .populate("ServiceId");
     return dataResponse(200, "success", bookings);
+};
+
+export const getCustomerBooking = async (customerId) => {
+    const bookings = await Booking.find({
+        CustomerId: customerId,
+    })
+        .populate("CustomerId")
+        .populate({
+            path: "PhotographerId",
+            populate: {
+                path: "PhotographerId",
+            },
+        })
+        .populate("ServiceId");
+    return dataResponse(200, "sucess", bookings);
 };
