@@ -9,7 +9,11 @@ const app = express();
 
 app.use(json());
 // app.use(loggingMiddleware);
-app.use(cors());
+app.use(
+    cors({
+        origin: "*",
+    })
+);
 app.use(morgan("dev"));
 app.use(router);
 
