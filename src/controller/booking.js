@@ -8,6 +8,7 @@ import {
     getPhotographerUsername,
     getUserInfomation,
     handleBookingForPhotographer,
+    sendBookingEmail,
 } from "../service/booking/index.js";
 
 const booking = express.Router();
@@ -36,7 +37,7 @@ booking.post("/book/photographer/:photographerId", async (req, res) => {
     const result = await getCustomerIdByEmail(email);
     console.log(result);
     const customerId = result.payload._id;
-    const result1 = await handleBookingForPhotographer(
+    await handleBookingForPhotographer(
         customerId,
         photographerId,
         service,
@@ -45,9 +46,16 @@ booking.post("/book/photographer/:photographerId", async (req, res) => {
         message,
         location
     );
-    res.status(result1.code).json({
-        message: result1.message,
-        payload: result1.payload,
+    const resultMail = await sendBookingEmail(
+        email,
+        service,
+        location,
+        time,
+        date
+    );
+    res.status(resultMail.code).json({
+        message: resultMail.message,
+        payload: resultMail.payload,
     });
 });
 
