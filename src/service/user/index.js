@@ -78,3 +78,18 @@ export const getPhotographerProfile = async (userId) => {
     }
     return dataResponse(200, "found", phothographer);
 };
+
+export const getPhotographerProfile1 = async (userId) => {
+    const photographer = await PhotographerProfile.findOne({
+        PhotographerId: userId,
+    })
+        .populate(
+            "PhotographerId",
+            "Email FirstName LastName PhoneNumber Avatar Username"
+        )
+        .populate("PhotoGraphs");
+    if (!photographer) {
+        return dataResponse(404, "not found photographer", null);
+    }
+    return dataResponse(200, "found", photographer);
+};
