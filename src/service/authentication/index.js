@@ -49,7 +49,7 @@ export const sendToken = async (email, token) => {
         const sent = await sendEmail(
             email,
             "Please verify your email",
-            `http://localhost:3000/api/authenticate/verify/${token}`
+            `${process.env.BASE_VERCEL_URL}/verify/${token}`
         );
         return dataResponse("Please verify your email", 200, sent);
     } catch (error) {
@@ -58,12 +58,11 @@ export const sendToken = async (email, token) => {
 };
 
 export const verifyToken = async (token) => {
-    try {
-        const result = await Token.findOneAndDelete({ token: token });
-        if (!result) {
-            return dataResponse("this token is no longer exist", 404, null);
-        }
-    } catch (error) {}
+    const result = await Token.findOneAndDelete({ token: token });
+    if (!result) {
+        return dataResponse("this token is no longer exist", 404, null);
+    }
+    return dataResponse("sucess", 200, result);
 };
 
 export const login = async (usernameOrEmail, password) => {
@@ -74,6 +73,13 @@ export const login = async (usernameOrEmail, password) => {
         console.log(user);
         if (!user) {
             return dataResponse("this user does not exist", 404, null);
+        }
+        if (user.verify === false) {
+            return dataResponse(
+                "you must verify your email to able to login",
+                400,
+                null
+            );
         }
         const result = await bcrypt.compare(password, user.Password);
         if (result) {

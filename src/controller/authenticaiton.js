@@ -32,6 +32,10 @@ authentication.post("/register", async (req, res) => {
 authentication.get("/verify/:token", async (req, res) => {
     const { token } = req.params;
     const result = await verifyToken(token);
+    res.status(result.code).json({
+        message: result.message,
+        payload: result.payload,
+    });
 });
 
 authentication.post("/login", async (req, res) => {
