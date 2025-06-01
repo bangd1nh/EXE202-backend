@@ -6,6 +6,7 @@ import {
     uploadImageForPhotographer,
 } from "../service/photographers/index.js";
 import { getPhotographerProfile } from "../service/user/index.js";
+import multer from "multer";
 
 const photographers = express.Router();
 
