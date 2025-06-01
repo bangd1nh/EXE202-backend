@@ -1,3 +1,4 @@
+import { verify } from "jsonwebtoken";
 import Token from "../../models/Token.js";
 import User from "../../models/User.js";
 import { generateToken, hashPassword, sendEmail } from "../../utils/index.js";
@@ -58,11 +59,17 @@ export const sendToken = async (email, token) => {
 };
 
 export const verifyToken = async (token) => {
-    const result = await Token.findOneAndDelete({ token: token });
-    if (!result) {
+    const resultToken = await Token.findOne({ token: token });
+    if (!resultToken) {
         return dataResponse("this token is no longer exist", 404, null);
     }
-    return dataResponse("sucess", 200, result);
+    const resultUser = await User.findByIdAndUpdate(resultToken.userId, {
+        verify: true,
+    });
+    if (resultUser && resultUser.verify) {
+        return dataResponse("sucess", 200, resultToken);
+    }
+    return dataResponse("fail to find user", 404, null);
 };
 
 export const login = async (usernameOrEmail, password) => {
