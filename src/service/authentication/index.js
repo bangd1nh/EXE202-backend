@@ -1,4 +1,3 @@
-import { verify } from "jsonwebtoken";
 import Token from "../../models/Token.js";
 import User from "../../models/User.js";
 import { generateToken, hashPassword, sendEmail } from "../../utils/index.js";
