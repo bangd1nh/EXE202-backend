@@ -66,8 +66,10 @@ export const uploadUserAvatar = async (file, userId) => {
     });
 };
 
-export const getPhotographerProfile = async (pId) => {
-    const phothographer = await PhotographerProfile.findById(pId)
+export const getPhotographerProfile = async (userId) => {
+    const phothographer = await PhotographerProfile.findOne({
+        PhotographerId: userId,
+    })
         .populate(
             "PhotographerId",
             "Email FirstName LastName PhoneNumber Avatar Username"
