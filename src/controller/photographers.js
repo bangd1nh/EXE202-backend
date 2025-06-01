@@ -9,6 +9,9 @@ import { getPhotographerProfile } from "../service/user/index.js";
 
 const photographers = express.Router();
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage }).single("file");
+
 photographers.get("/", async (req, res) => {
     const result = await getAllPhotographers();
     res.status(result.code).json({
@@ -61,7 +64,7 @@ photographers.put("/user/:userId", async (req, res) => {
     });
 });
 
-photographers.post("/user/uploadImage/:userId", async (req, res) => {
+photographers.post("/user/uploadImage/:userId", upload, async (req, res) => {
     const { userId } = req.params;
     const file = req.file;
     if (!file) {
