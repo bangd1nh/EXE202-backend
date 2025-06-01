@@ -3,6 +3,7 @@ import {
     getAllPhotographers,
     getServiceByPhotographersId,
     updatePhotographerProfile,
+    uploadImageForPhotographer,
 } from "../service/photographers/index.js";
 import { getPhotographerProfile } from "../service/user/index.js";
 
@@ -60,6 +61,22 @@ photographers.put("/user/:userId", async (req, res) => {
     });
 });
 
-photographers.post("/user/uploadImage/:userId", async (req, res) => {});
+photographers.post("/user/uploadImage/:userId", async (req, res) => {
+    const { userId } = req.params;
+    const file = req.file;
+    if (!file) {
+        return res.status(400).json({ message: "No file uploaded" });
+    }
+    try {
+        const result = await uploadImageForPhotographer(file, userId);
+        console.log("Upload success:", result);
+        return res.status(result.code).json(result);
+    } catch (error) {
+        console.error("Upload error:", error);
+        return res
+            .status(500)
+            .json({ message: "Error uploading image", error: error.message });
+    }
+});
 
 export default photographers;
