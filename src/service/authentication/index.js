@@ -62,9 +62,13 @@ export const verifyToken = async (token) => {
     if (!resultToken) {
         return dataResponse("this token is no longer exist", 404, null);
     }
-    const resultUser = await User.findByIdAndUpdate(resultToken.userId, {
-        verify: true,
-    });
+    const resultUser = await User.findByIdAndUpdate(
+        resultToken.userId,
+        {
+            verify: true,
+        },
+        { new: true }
+    );
     if (resultUser && resultUser.verify) {
         return dataResponse("sucess", 200, resultToken);
     }
