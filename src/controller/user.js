@@ -13,7 +13,6 @@ const upload = multer({ storage }).single("file");
 
 user.get("/:userId", async (req, res) => {
     const { userId } = req.params;
-    console.log(userId);
     const result = await getUserById(userId);
     res.status(result.code).json({
         message: result.message,

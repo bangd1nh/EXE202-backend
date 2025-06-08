@@ -4,6 +4,7 @@ import User from "../../models/User.js";
 import nodemailer from "nodemailer";
 import { sendEmail, sendEmailHtml } from "../../utils/index.js";
 import Services from "../../models/Services.js";
+import { updateWalletWithTransaction } from "../../repositories/wallet.repo.js";
 
 const dataResponse = (code, message, payload) => {
     return {
@@ -48,7 +49,14 @@ export const handleBookingForPhotographer = async (
     message,
     location
 ) => {
-    const booking = Booking.create({
+    const service = await Services.findById(serviceId);
+    if (!service) throw new Error("Service not found");
+
+    const total = service.Price;
+    const deposit = Math.round(total * 0.3);
+    const remaining = Math.round(total * 0.7);
+
+    const booking = await Booking.create({
         CustomerId: customerId,
         PhotographerId: photographerId,
         ServiceId: serviceId,
@@ -58,10 +66,21 @@ export const handleBookingForPhotographer = async (
         BookingType: "Photographer",
         Status: "PENDING",
         Location: location,
+        DepositAmount: deposit,
+        RemainingAmount: remaining,
+        DepositPaid: true,
+        DepositPaidAt: new Date(),
     });
     if (!booking) {
         return dataResponse(400, "idk", null);
     }
+    
+    await updateWalletWithTransaction(process.env.ADMIN_USER_ID,{
+            BookingId: booking._id,
+            Type: 'DEPOSIT',
+            Amount: deposit,
+        });
+
     return dataResponse(200, "success", booking);
 };
 
@@ -94,14 +113,14 @@ export const getAcceptedBooking = async (photographerId) => {
     });
     const bookings = await Booking.find({
         PhotographerId: photographer._id,
-        Status: "ACCEPT",
+         Status: { $in: ["ACCEPT", "WAITING_DEMO"] },
     })
         .populate("CustomerId", "-Password")
         .populate("ServiceId");
     return dataResponse(200, "success", bookings);
 };
 
-export const getCustomerBooking = async (customerId) => {
+export const getCustomerBooking = async (customerId) => { /////
     const bookings = await Booking.find({
         CustomerId: customerId,
     })
