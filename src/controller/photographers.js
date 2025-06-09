@@ -11,7 +11,7 @@ import {
     getPhotographerProfile1,
 } from "../service/user/index.js";
 import multer from "multer";
-import ApiResponse from "../utils/ApiResponse.js";
+import ApiResponse from "../utils/apiResponse.js";
 
 const photographers = express.Router();
 
