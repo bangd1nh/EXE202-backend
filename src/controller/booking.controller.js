@@ -34,7 +34,7 @@ const uploadDemo = async (req, res) => {
 const acceptFinalPayment = async (req, res) => {
   try {
     const { id } = req.params;
-    const { customerId } = req.body;
+    const  customerId  = req.body.photographerId;
     console.log({ customerId });
     const result = await bookingService.acceptFinalPayment(id, customerId);
     return ApiResponse.success(res, result);
