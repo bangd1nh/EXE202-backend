@@ -45,7 +45,7 @@ photographers.get("/services/:photographerId", async (req, res) => {
     });
 });
 
-photographers.get("/user/:userId", async (req, res) => {    //////
+photographers.get("/user/:userId", async (req, res) => {  
     const { userId } = req.params;
     const result = await getPhotographerProfile1(userId);
     console.log({result});
