@@ -1,4 +1,4 @@
-import ApiResponse from "../utils/ApiResponse.js";
+import ApiResponse from "../utils/apiResponse.js";
 import bookingService from "../service/booking/booking.service.js";
 
 const rejectBooking = async (req, res) => {
@@ -32,16 +32,15 @@ const uploadDemo = async (req, res) => {
 };
 
 const acceptFinalPayment = async (req, res) => {
-    try{
-        const {id} = req.params;
-        const {customerId} = req.body;
-        console.log({customerId});
-        const result = await bookingService.acceptFinalPayment(id, customerId);
-        return ApiResponse.success(res, result);
-    }catch(err) {
-        return ApiResponse.error(res, 500, err.message);
-    }
-
+  try {
+    const { id } = req.params;
+    const { customerId } = req.body;
+    console.log({ customerId });
+    const result = await bookingService.acceptFinalPayment(id, customerId);
+    return ApiResponse.success(res, result);
+  } catch (err) {
+    return ApiResponse.error(res, 500, err.message);
+  }
 };
 
 export default {

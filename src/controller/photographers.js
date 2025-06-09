@@ -11,7 +11,7 @@ import {
     getPhotographerProfile1,
 } from "../service/user/index.js";
 import multer from "multer";
-import ApiResponse from "../utils/ApiResponse.js";
+import ApiResponse from "../utils/apiResponse.js";
 
 const photographers = express.Router();
 
@@ -45,7 +45,7 @@ photographers.get("/services/:photographerId", async (req, res) => {
     });
 });
 
-photographers.get("/user/:userId", async (req, res) => {    //////
+photographers.get("/user/:userId", async (req, res) => {  
     const { userId } = req.params;
     const result = await getPhotographerProfile1(userId);
     console.log({result});

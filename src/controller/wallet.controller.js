@@ -1,11 +1,11 @@
-import ApiResponse from "../utils/ApiResponse.js";
-import walletService from '../service/wallet.service.js'
+import ApiResponse from "../utils/apiResponse.js";
+import walletService from "../service/wallet.service.js";
 const getWalletByUserId = async (req, res) => {
   try {
     const { userId } = req.params;
-    console.log({userId})
+    console.log({ userId });
     const wallet = await walletService.getWalletByUserId(userId);
-    if (!wallet) return ApiResponse.notFound(res, 'Wallet not found');
+    if (!wallet) return ApiResponse.notFound(res, "Wallet not found");
     return ApiResponse.success(res, wallet);
   } catch (err) {
     console.error(err);
@@ -13,5 +13,5 @@ const getWalletByUserId = async (req, res) => {
   }
 };
 export default {
-    getWalletByUserId,
-}
+  getWalletByUserId,
+};
