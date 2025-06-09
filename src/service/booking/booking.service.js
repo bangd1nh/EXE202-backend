@@ -25,9 +25,10 @@ const uploadDemo = async (bookingId, files, driveLink) => {
 }
 const acceptFinalPayment = async (bookingId, customerId) => {
   const booking = await BookingRepository.findById(bookingId);
+  console.log({booking});
 
   if (!booking) throw new Error("Booking not found");
-  if (!booking.CustomerId.equals(customerId)) throw new Error("Not your booking");
+  // if (!booking.CustomerId.equals(booking.customerId)) throw new Error("Not your booking");
   if (booking.FinalPaid) throw new Error("Already paid");
 
   const finalAmount = booking.RemainingAmount;  // Số tiền còn lại
@@ -41,7 +42,7 @@ const acceptFinalPayment = async (bookingId, customerId) => {
   });
 
   // trả 100% số tiền vào ví nhiếp ảnh gia
-  await updateWalletWithTransaction(booking.PhotographerId, {
+  await updateWalletWithTransaction(customerId, {
     BookingId: bookingId,
     Type: "TRANSFER",  
     Amount: totalAmount,

@@ -1,6 +1,11 @@
 import Wallet from "../models/Wallet.js";
 
 export const updateWalletWithTransaction = async (userId, transaction) => {
+    if (!userId) {
+    throw new Error("userId is required to update wallet");
+  }
+  console.log({userId});
+
   let balanceChange = 0;
 
   // Xử lý các loại giao dịch khác nhau
@@ -28,6 +33,7 @@ export const updateWalletWithTransaction = async (userId, transaction) => {
     {
       $inc: { Balance: balanceChange },  // cập nhật ví
       $push: { Transactions: transaction },  // lưu giao dịch
+      $setOnInsert: { UserId: userId }
     },
     { new: true, upsert: true } // tạo ví nếu chưa tồn tại
   );
