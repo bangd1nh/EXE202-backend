@@ -7,7 +7,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRETE,
 });
 
-// upload ảnh với watermark
+// Upload ảnh với watermark và giữ chất lượng cao
 export const uploadImageWatermark = (file) => {
   return new Promise((resolve, reject) => {
     if (!(file instanceof Buffer)) {
@@ -18,12 +18,14 @@ export const uploadImageWatermark = (file) => {
       {
         folder: "booking_demo",
         transformation: [
-          { width: 'auto', crop: 'limit' }, 
+          {
+            quality: "auto:best",
+          },
           {
             overlay: process.env.CLOUDINARY_WATERMARK,
             gravity: "south_east",
             opacity: 60,
-            width: 100, 
+            width: 100,
             crop: "scale",
           },
         ],
@@ -37,6 +39,5 @@ export const uploadImageWatermark = (file) => {
     streamifier.createReadStream(file).pipe(stream);
   });
 };
-
 
 export default cloudinary;
