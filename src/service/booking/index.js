@@ -175,7 +175,7 @@ function generateEmailTemplate({
 }) {
     return `
   <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-    <h2 style="color: #4B0082;">Cảm ơn bạn đã sử dụng dịch vụ của <strong>Framate</strong>!</h2>
+    <h2 style="color: #4B0082;">Cảm ơn bạn đã sử dụng dịch vụ của <strong>FrameMate</strong>!</h2>
     
     <p>Chào <strong>${customerName}</strong>,</p>
     <p>Chúng tôi xin xác nhận rằng bạn đã đặt cọc thành công số tiền <strong style="color: #008000;">${amount} VND</strong> cho dịch vụ <strong>${service}</strong>.</p>
@@ -192,7 +192,7 @@ function generateEmailTemplate({
 
     <p>Nếu có bất kỳ câu hỏi nào, bạn có thể liên hệ với chúng tôi qua email hoặc hotline.</p>
 
-    <p>Trân trọng,<br/>Đội ngũ Framate</p>
+    <p>Trân trọng,<br/>Đội ngũ FrameMate</p>
 
     <hr style="margin-top: 30px;"/>
     <p style="font-size: 12px; color: #888;">Email này được gửi tự động, vui lòng không trả lời.</p>

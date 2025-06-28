@@ -6,6 +6,7 @@ import photographs from "../controller/photographs.js";
 import booking from "../controller/booking.js";
 import bookingRoutes from'../routes/booking.routes.js';
 import walletRoutes from '../routes/wallet.routes.js';
+import blogRoutes from '../routes/blog.routes.js'
 
 const router = express.Router();
 
@@ -16,6 +17,7 @@ router.use("/phtographs", photographs);
 router.use("/booking", booking);
 router.use("/bookings", bookingRoutes);
 router.use("/wallets", walletRoutes);
+router.use("/blogs", blogRoutes);
 
 
 export default router;

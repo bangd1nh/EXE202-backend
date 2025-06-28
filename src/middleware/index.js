@@ -1,6 +1,16 @@
-export const loggingMiddleware = (req, _res, next) => {
-    console.log(`${req.method} - ${req.url}`);
-    console.log("Body:", req.body);
+export const requireAuth = (req, res, next) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ message: "Unauthorized" });
 
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    req.user = {
+      id: decoded.userId, 
+      role: decoded.role,
+      email: decoded.usernameOrEmail
+    };
     next();
+  } catch (err) {
+    return res.status(403).json({ message: "Invalid token" });
+  }
 };
