@@ -18,11 +18,12 @@ export const uploadImageWatermark = (file) => {
       {
         folder: "booking_demo",
         transformation: [
+          { width: 'auto', crop: 'limit' }, 
           {
             overlay: process.env.CLOUDINARY_WATERMARK,
             gravity: "south_east",
             opacity: 60,
-            width: 100,
+            width: 100, 
             crop: "scale",
           },
         ],
@@ -36,5 +37,6 @@ export const uploadImageWatermark = (file) => {
     streamifier.createReadStream(file).pipe(stream);
   });
 };
+
 
 export default cloudinary;
