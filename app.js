@@ -1,6 +1,5 @@
 import express, { json, Router } from "express";
 import connectDB from "./src/config/database.js";
-// import { loggingMiddleware } from "./src/middleware/index.js";
 import cors from "cors";
 import router from "./src/routes/index.js";
 import morgan from "morgan";
@@ -8,7 +7,6 @@ import morgan from "morgan";
 const app = express();
 
 app.use(json());
-// app.use(loggingMiddleware);
 app.use(
     cors({
         origin: "*",
