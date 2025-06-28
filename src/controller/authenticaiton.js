@@ -17,7 +17,7 @@ authentication.post("/register", async (req, res) => {
         const token = await createToken(result.payload._id);
         if (token) {
             const sent = await sendToken(email, token.payload.token);
-            console.log({sent});
+            console.log({ sent });
             res.status(sent.code).json(sent.payload);
         }
     } else {
@@ -40,8 +40,9 @@ authentication.get("/verify/:token", async (req, res) => {
 
 authentication.post("/login", async (req, res) => {
     const { usernameOrEmail, password } = req.body;
+    console.log(req.body);
     const result = await login(usernameOrEmail, password);
-    console.log({result});
+    console.log({ result });
     if (result.payload) {
         const authenticateUser = {
             usernameOrEmail: result.payload.Email,
