@@ -28,7 +28,7 @@ const blogController = {
       const data = {
         ...req.body,
         Tags: req.body.Tags ? JSON.parse(req.body.Tags) : [],
-        AuthorId: process.env.ADMIN_USER_ID ,
+        AuthorId: process.env.ADMIN_USER_ID || '68443d8a7fb1436049aea08e',
       };
 
       const blog = await blogService.createBlog(data, file);
