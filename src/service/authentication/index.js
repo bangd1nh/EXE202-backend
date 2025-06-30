@@ -50,7 +50,7 @@ export const sendToken = async (email, token) => {
         const sent = await sendEmail(
             email,
             "Please verify your email",
-            `${process.env.BASE_VERCEL_URL}verify/${token}`
+            `${process.env.BASE_VERCEL_URL}/verify/${token}`
         );
         return dataResponse("Please verify your email", 200, sent);
     } catch (error) {
