@@ -7,6 +7,7 @@ import {
     verifyToken,
 } from "../service/authentication/index.js";
 import jwt from "jsonwebtoken";
+import { createPhotographerProfile } from "../service/photographers/index.js";
 
 const authentication = express.Router();
 
@@ -17,6 +18,7 @@ authentication.post("/register", async (req, res) => {
         const token = await createToken(result.payload._id);
         if (token) {
             const sent = await sendToken(email, token.payload.token);
+            await createPhotographerProfile(result.payload._id);
             console.log({ sent });
             res.status(sent.code).json(sent.payload);
         }
