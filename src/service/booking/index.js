@@ -89,7 +89,7 @@ export const getPendingBookingByPhotographerId = async (photographerId) => {
         PhotographerId: photographerId,
     });
     const bookings = await Booking.find({
-        PhotographerId: photographer._id,
+        PhotographerId: photographer.PhotographerId,
         Status: "PENDING",
     })
         .populate("CustomerId", "-Password")
@@ -112,8 +112,8 @@ export const getAcceptedBooking = async (photographerId) => {
         PhotographerId: photographerId,
     });
     const bookings = await Booking.find({
-        PhotographerId: photographer._id,
-         Status: { $in: ["ACCEPT", "WAITING_DEMO"] },
+        PhotographerId: photographer.PhotographerId,
+        Status: { $in: ["ACCEPT", "WAITING_DEMO"] },
     })
         .populate("CustomerId", "-Password")
         .populate("ServiceId");
