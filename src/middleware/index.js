@@ -14,3 +14,8 @@ export const requireAuth = (req, res, next) => {
     return res.status(403).json({ message: "Invalid token" });
   }
 };
+
+const asyncHandler = fn => (req, res, next) =>
+    Promise.resolve(fn(req, res, next)).catch(next);
+
+export default asyncHandler;
