@@ -36,7 +36,7 @@ export const getAllPhotographers = async (page = 1, limit = 10) => {
 };
 
 export const getServiceByPhotographersId = async (photographerId) => {
-    const service = await PhotographerProfile.findById(photographerId)
+    const service = await PhotographerProfile.findOne({ PhotographerId: photographerId })
         .select("Services -_id")
         .populate("Services");
     if (!service) {
