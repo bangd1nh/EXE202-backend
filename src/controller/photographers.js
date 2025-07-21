@@ -1,4 +1,8 @@
 import express from "express";
+import multer from "multer";
+import asyncHandler from "../middleware/index.js"
+import ApiResponse from "../utils/apiResponse.js";
+
 import {
     getAllPhotographers,
     getServiceByPhotographersId,
@@ -10,15 +14,14 @@ import {
     getPhotographerProfile,
     getPhotographerProfile1,
 } from "../service/user/index.js";
-import multer from "multer";
-import ApiResponse from "../utils/apiResponse.js";
 
 const photographers = express.Router();
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage }).single("file");
 
-photographers.get("/", async (req, res) => {
+
+photographers.get("/", asyncHandler(async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const result = await getAllPhotographers(page, limit);
@@ -29,28 +32,29 @@ photographers.get("/", async (req, res) => {
         page,
         limit,
     });
-});
+}));
 
-photographers.get("/:photographerId", async (req, res) => {
+
+photographers.get("/:photographerId", asyncHandler(async (req, res) => {
     const { photographerId } = req.params;
     const result = await getPhotographerProfile(photographerId);
     res.status(result.code).json({
         message: result.message,
         payload: result.payload,
     });
-});
+}));
 
-photographers.get("/services/:photographerId", async (req, res) => {
+photographers.get("/services/:photographerId", asyncHandler(async (req, res) => {
     const { photographerId } = req.params;
     const result = await getServiceByPhotographersId(photographerId);
-
     res.status(result.code).json({
         message: result.message,
         payload: result.payload,
     });
-});
+}));
 
-photographers.get("/user/:userId", async (req, res) => {
+
+photographers.get("/user/:userId", asyncHandler(async (req, res) => {
     const { userId } = req.params;
     const result = await getPhotographerProfile1(userId);
     console.log({ result });
@@ -58,12 +62,12 @@ photographers.get("/user/:userId", async (req, res) => {
         message: result.message,
         payload: result.payload,
     });
-});
+}));
 
-photographers.put("/user/:userId", async (req, res) => {
+
+photographers.put("/user/:userId", asyncHandler(async (req, res) => {
     const { userId } = req.params;
-    const { experienceYear, location, device, desc, price, services } =
-        req.body;
+    const { experienceYear, location, device, desc, price, services } = req.body;
     const result = await updatePhotographerProfile(
         userId,
         experienceYear,
@@ -77,7 +81,8 @@ photographers.put("/user/:userId", async (req, res) => {
         message: result.message,
         payload: result.payload,
     });
-});
+}));
+
 
 photographers.post("/user/uploadImage/:userId", upload, async (req, res) => {
     const { userId } = req.params;
@@ -97,30 +102,26 @@ photographers.post("/user/uploadImage/:userId", upload, async (req, res) => {
     }
 });
 
-photographers.post("/:photographerId/services", async (req, res) => {
-    try {
-        const { photographerId } = req.params;
-        const { name, description, price } = req.body;
 
-        if (!name || !description || price === undefined) {
-            return ApiResponse.error(
-                res,
-                400,
-                "Service name, description, and price are required"
-            );
-        }
+photographers.post("/:photographerId/services", asyncHandler(async (req, res) => {
+    const { photographerId } = req.params;
+    const { name, description, price } = req.body;
 
-        const newService = await createServiceForPhotographer(photographerId, {
-            name,
-            description,
-            price,
-        });
-
-        return ApiResponse.created(res, newService);
-    } catch (err) {
-        console.error(err);
-        return ApiResponse.error(res, 500, err.message);
+    if (!name || !description || price === undefined) {
+        return ApiResponse.error(
+            res,
+            400,
+            "Service name, description, and price are required"
+        );
     }
-});
+
+    const newService = await createServiceForPhotographer(photographerId, {
+        name,
+        description,
+        price,
+    });
+
+    return ApiResponse.created(res, newService);
+}));
 
 export default photographers;
